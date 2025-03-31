@@ -16,7 +16,6 @@ export const performOCR = async (req, res) => {
 
     res.json({ data });
   } catch (error) {
-    console.error("OCR Error:", error);
     res.status(500).json({ error: "OCR processing failed!" });
   }
 };

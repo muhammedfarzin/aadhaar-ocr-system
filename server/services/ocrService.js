@@ -15,9 +15,6 @@ export const extractAadhaarDetails = (frontText, backText) => {
   const cleanFrontText = cleanText(frontText);
   const cleanBackText = cleanText(backText);
 
-  console.log(cleanFrontText);
-
-
   // Extract DOB
   const dobPattern = /(?:Date of Birth|DOB) ?:? *(\d{2}\/\d{2}\/\d{4})/i;
   const dobMatch = cleanFrontText.match(dobPattern);
@@ -60,7 +57,6 @@ export const extractTextFromImage = async (path) => {
     const { data: { text } } = await Tesseract.recognize(path, 'eng');
     return text;
   } catch (error) {
-    console.error('Error during OCR:', error);
     throw error;
   }
 }
