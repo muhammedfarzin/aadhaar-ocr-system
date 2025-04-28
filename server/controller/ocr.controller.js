@@ -14,7 +14,7 @@ export const performOCR = async (req, res) => {
 
     const data = extractAadhaarDetails(frontText, backText);
 
-    res.json({ data });
+    res.json(data);
   } catch (error) {
     res.status(500).json({ error: "OCR processing failed!" });
   }

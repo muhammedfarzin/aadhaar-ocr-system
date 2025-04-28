@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import AadharInputButton from "./components/AadharInputButton";
+import DisplayAadharData from "./components/DisplayAadharData";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -51,40 +53,20 @@ function App() {
             <h3 className="text-lg font-semibold text-center mb-4">Upload Aadhaar Images</h3>
 
             {/* Front Image Upload */}
-            <div className="text-center mb-4">
-              <label className="block text-sm font-medium">Upload Front Side</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => handleFileChange(e, "front")}
-                className="mt-2 border p-2 w-full cursor-pointer"
-              />
-              {frontImage && (
-                <img
-                  src={URL.createObjectURL(frontImage)}
-                  alt="Front Aadhaar"
-                  className="mt-2 w-full h-40 object-cover rounded"
-                />
-              )}
-            </div>
+            <AadharInputButton
+              image={frontImage}
+              title="front"
+              label="Upload Front Side"
+              handleFileChange={handleFileChange}
+            />
 
             {/* Back Image Upload */}
-            <div className="text-center">
-              <label className="block text-sm font-medium">Upload Back Side</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => handleFileChange(e, "back")}
-                className="mt-2 border p-2 w-full cursor-pointer"
-              />
-              {backImage && (
-                <img
-                  src={URL.createObjectURL(backImage)}
-                  alt="Back Aadhaar"
-                  className="mt-2 w-full h-40 object-cover rounded"
-                />
-              )}
-            </div>
+            <AadharInputButton
+              image={backImage}
+              title="back"
+              label="Upload Back Side"
+              handleFileChange={handleFileChange}
+            />
 
             {/* Process OCR Button */}
             <button
@@ -97,29 +79,7 @@ function App() {
           </div>
 
           {/* Right Section - Extracted Aadhaar Details */}
-          <div className="bg-gray-50 p-4 rounded-lg border">
-            <h3 className="text-lg font-semibold text-center mb-4">Extracted Aadhaar Details</h3>
-
-            {extractedData ? (
-              <div className="text-sm bg-white p-3 rounded-lg border shadow">
-                <p><strong>Name:</strong> {extractedData.data.name || "N/A"}</p>
-                <p><strong>Date of Birth:</strong> {extractedData.data.dob || "N/A"}</p>
-                <p><strong>Gender:</strong> {extractedData.data.gender || "N/A"}</p>
-                <p><strong>Aadhaar Number:</strong> {extractedData.data.aadhaarNumber || "N/A"}</p>
-                <p><strong>Address:</strong> {extractedData.data.address || "N/A"}</p>
-                <p><strong>Pincode:</strong> {extractedData.data.pincode || "N/A"}</p>
-
-                <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                  <h3 className="text-lg font-semibold">Response</h3>
-                  <pre className="text-sm bg-gray-200 p-2 rounded mt-2 overflow-x-auto">
-                    {JSON.stringify(extractedData, null, 2)}
-                  </pre>
-                </div>
-              </div>
-            ) : (
-              <p className="text-center text-gray-500">No Aadhaar data extracted yet.</p>
-            )}
-          </div>
+          <DisplayAadharData data={extractedData} />
         </div>
       </div>
     </div>
