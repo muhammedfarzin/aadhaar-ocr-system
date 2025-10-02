@@ -1,7 +1,19 @@
 import Tesseract from "tesseract.js";
 
-export const extractAadhaarDetails = (frontText, backText) => {
-  const info = {
+interface AadhaarInfo {
+  dob: string | null;
+  aadhaarNumber: string | null;
+  gender: string | null;
+  name: string | null;
+  address: string | null;
+  pincode: string | null;
+}
+
+export const extractAadhaarDetails = (
+  frontText: string,
+  backText: string
+): AadhaarInfo => {
+  const info: AadhaarInfo = {
     dob: null,
     aadhaarNumber: null,
     gender: null,
@@ -10,8 +22,7 @@ export const extractAadhaarDetails = (frontText, backText) => {
     pincode: null,
   };
 
-
-  const cleanText = (text) => text.replace(/\s+/g, ' ').trim();
+  const cleanText = (text: string) => text.replace(/\s+/g, " ").trim();
   const cleanFrontText = cleanText(frontText);
   const cleanBackText = cleanText(backText);
 
@@ -33,15 +44,15 @@ export const extractAadhaarDetails = (frontText, backText) => {
   // Extract Name
   const namePattern = /\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\b/g;
   const nameMatch = cleanFrontText.match(namePattern);
-  info.name = nameMatch ? nameMatch.pop().trim() : null;
+  info.name = nameMatch?.pop()?.trim() ?? null;
 
   // Extract Address
   const addressPattern = /Address:\s*([\s\S]*?)(?:\d{6}|$)/i;
   const addressMatch = cleanBackText.match(addressPattern);
   if (addressMatch) {
     info.address = cleanText(addressMatch[1])
-      .replace(/[^\w\s,.-]/g, '') // Remove unwanted characters
-      .replace(/\s+/g, ' ')
+      .replace(/[^\w\s,.-]/g, "") // Remove unwanted characters
+      .replace(/\s+/g, " ")
       .trim();
   }
 
@@ -52,11 +63,13 @@ export const extractAadhaarDetails = (frontText, backText) => {
   return info;
 };
 
-export const extractTextFromImage = async (path) => {
+export const extractTextFromImage = async (path: string) => {
   try {
-    const { data: { text } } = await Tesseract.recognize(path, 'eng');
+    const {
+      data: { text },
+    } = await Tesseract.recognize(path, "eng");
     return text;
   } catch (error) {
     throw error;
   }
-}
+};

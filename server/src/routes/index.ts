@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { performOCR } from "../controller/ocr.controller.js";
+import { performOCR } from "../controller/ocr.controller";
 
 const router = Router();
 
