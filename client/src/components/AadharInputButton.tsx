@@ -1,4 +1,21 @@
-const AadharInputButton = ({label, handleFileChange, title, image}) => {
+import type { ChangeEvent } from "react";
+
+interface Props {
+  label: string;
+  handleFileChange: (
+    event: ChangeEvent<HTMLInputElement>,
+    type: "front" | "back"
+  ) => void;
+  title: "front" | "back";
+  image: File | null;
+}
+
+const AadharInputButton: React.FC<Props> = ({
+  label,
+  handleFileChange,
+  title,
+  image,
+}) => {
   return (
     <div className="text-center mb-4">
       <label className="block text-sm font-medium">{label}</label>
@@ -16,7 +33,7 @@ const AadharInputButton = ({label, handleFileChange, title, image}) => {
         />
       )}
     </div>
-  )
-}
+  );
+};
 
 export default AadharInputButton;
