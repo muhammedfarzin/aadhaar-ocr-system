@@ -57,7 +57,10 @@ function App() {
 
         <div className="grid grid-cols-2 gap-6">
           {/* Left Section - Image Upload */}
-          <InputForm onSubmit={handleOCR} />
+          <InputForm
+            onSubmit={handleOCR}
+            onClear={() => setExtractedData(null)}
+          />
 
           {/* Right Section - Extracted Aadhaar Details */}
           <DisplayAadharData data={extractedData} />

@@ -4,9 +4,10 @@ import { toast } from "react-toastify";
 
 interface Props {
   onSubmit: (frontImage: File | null, backImage: File | null) => Promise<void>;
+  onClear?: () => void;
 }
 
-const InputForm: React.FC<Props> = ({ onSubmit }) => {
+const InputForm: React.FC<Props> = ({ onSubmit, onClear }) => {
   const [frontImage, setFrontImage] = useState<File | null>(null);
   const [backImage, setBackImage] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -24,8 +25,24 @@ const InputForm: React.FC<Props> = ({ onSubmit }) => {
     else setBackImage(file);
   };
 
+  const handleSubmit = () => {
+    setIsLoading(true);
+    onSubmit(frontImage, backImage).finally(() => {
+      setIsLoading(false);
+    });
+  };
+
+  const handleClear = () => {
+    setFrontImage(null);
+    setBackImage(null);
+    onClear?.();
+  };
+
   return (
-    <div className="bg-gray-50 p-4 rounded-lg border">
+    <form
+      className="bg-gray-50 p-4 rounded-lg border"
+      onSubmit={(e) => e.preventDefault()}
+    >
       <h3 className="text-lg font-semibold text-center mb-4">
         Upload Aadhaar Images
       </h3>
@@ -46,20 +63,27 @@ const InputForm: React.FC<Props> = ({ onSubmit }) => {
         handleFileChange={handleFileChange}
       />
 
-      {/* Process OCR Button */}
-      <button
-        onClick={() => {
-          setIsLoading(true);
-          onSubmit(frontImage, backImage).finally(() => {
-            setIsLoading(false);
-          });
-        }}
-        className="mt-4 w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 disabled:bg-blue-600/80 cursor-pointer transition-all duration-300"
-        disabled={isLoading}
-      >
-        {isLoading ? "Processing..." : "Extract Aadhaar Details"}
-      </button>
-    </div>
+      <div className="flex flex-row">
+        {/* Clear Button */}
+        <button
+          onClick={handleClear}
+          type="reset"
+          className="mt-4 w-full bg-gray-400 text-black p-2 rounded-s-md hover:bg-gray-500 cursor-pointer disabled:bg-gray-400/80 disabled:cursor-not-allowed transition-all duration-300"
+          disabled={isLoading}
+        >
+          Clear
+        </button>
+
+        {/* Process OCR Button */}
+        <button
+          onClick={handleSubmit}
+          className="mt-4 w-full bg-blue-600 text-white p-2 rounded-e-md hover:bg-blue-700 disabled:bg-blue-600/80 disabled:cursor-not-allowed cursor-pointer transition-all duration-300"
+          disabled={isLoading}
+        >
+          {isLoading ? "Processing..." : "Extract Aadhaar Details"}
+        </button>
+      </div>
+    </form>
   );
 };
 
