@@ -22,12 +22,16 @@ export const performOCR: RequestHandler = async (req, res) => {
     const frontText = await extractTextFromImage(frontPath);
     const backText = await extractTextFromImage(backPath);
 
-    const data = extractAadhaarDetails(frontText, backText);
+    const extractResult = extractAadhaarDetails(frontText, backText);
 
     fs.unlinkSync(frontPath);
     fs.unlinkSync(backPath);
 
-    res.status(200).json(data);
+    if (!extractResult.success) {
+      return res.status(400).json({ error: extractResult.error });
+    }
+
+    res.status(200).json(extractResult.data);
   } catch (error) {
     res.status(500).json({ error: "OCR processing failed!" });
   }

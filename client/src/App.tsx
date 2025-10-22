@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import AadharInputButton from "./components/AadharInputButton";
 import DisplayAadharData from "./components/DisplayAadharData";
@@ -55,7 +55,13 @@ function App() {
       );
       setExtractedData(response.data);
     } catch (error) {
-      toast.error(`OCR Error: ${error}`);
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.error);
+      } else if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error(`OCR Error: ${error}`);
+      }
     }
     setLoading(false);
   };
