@@ -76,7 +76,7 @@ export const extractAadhaarDetails = (
     };
   }
 
-  if (!frontHasMarkers && !backHasAddress) {
+  if (!frontHasMarkers || !backHasAddress) {
     return {
       success: false,
       error:
