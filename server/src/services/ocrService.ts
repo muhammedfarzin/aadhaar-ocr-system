@@ -24,10 +24,10 @@ export const extractAadhaarDetails = (
   backText: string
 ): OCRValidationResult => {
   const info: AadhaarInfo = {
-    dob: null,
-    aadhaarNumber: null,
-    gender: null,
     name: null,
+    dob: null,
+    gender: null,
+    aadhaarNumber: null,
     address: null,
     pincode: null,
   };

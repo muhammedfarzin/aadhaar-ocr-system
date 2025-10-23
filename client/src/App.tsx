@@ -38,6 +38,8 @@ function App() {
       );
       setExtractedData(response.data);
     } catch (error) {
+      setExtractedData(null);
+
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.error);
       } else if (error instanceof Error) {
