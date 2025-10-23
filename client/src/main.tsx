@@ -9,6 +9,7 @@ createRoot(document.getElementById("root")!).render(
     <App />
     <ToastContainer
       position="bottom-right"
+      stacked
       hideProgressBar
       draggable
       transition={Slide}
